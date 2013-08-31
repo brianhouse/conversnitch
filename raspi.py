@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import time, json, threading, subprocess, queue, platform
+import time, json, threading, subprocess, queue, platform, os
 import numpy as np
-from housepy import log, config, strings, net#, s3
+from housepy import log, config, strings, net, s3, util
 from scipy.io import wavfile
 
 
@@ -16,7 +16,7 @@ class Recorder(threading.Thread):
 
     def run(self):
         while True:
-            t = int(time.time())
+            t = util.timestamp()
             log.info("record %s" % t)
             try:
                 if platform.system() == "Darwin":                
@@ -88,7 +88,7 @@ class Uploader(threading.Thread):
             data = {'t': t}
             response = net.read("http://%s:%s" % (config['server']['host'], config['server']['port']), json.dumps(data).encode('utf-8'))
             log.info(response)
-            os.remove(filename)
+            # os.remove(filename)
         except Exception as e:
             log.error(log.exc(e))
 
