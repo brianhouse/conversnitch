@@ -37,15 +37,15 @@ class MechanicalTurk(object):
         if 'stdout_log' not in mturk_config_dict:
             logging.getLogger('requests').setLevel(logging.WARNING)
         self.sandbox = mturk_config_dict["use_sandbox"] # Use sandbox?
-        self.aws_key = mturk_config_dict["access_key_id"].encode('utf-8')
-        self.aws_secret_key = mturk_config_dict["secret_access_key"].encode('utf-8')
+        self.aws_key = mturk_config_dict["access_key_id"]
+        self.aws_secret_key = mturk_config_dict["secret_access_key"]
 
     def _generate_timestamp(self, gmtime):
         return time.strftime("%Y-%m-%dT%H:%M:%SZ", gmtime)
 
     def _generate_signature(self, service, operation, timestamp, secret_access_key):
-        my_sha_hmac = hmac.new(secret_access_key, ("%s%s%s" % (service, operation, timestamp)).encode('utf-8'), hashlib.sha1)
-        my_b64_hmac_digest = base64.encodestring(my_sha_hmac.digest()).strip()
+        my_sha_hmac = hmac.new(secret_access_key.encode('utf-8'), ("%s%s%s" % (service, operation, timestamp)).encode('utf-8'), hashlib.sha1)
+        my_b64_hmac_digest = base64.encodestring(my_sha_hmac.digest()).strip().decode('utf-8')
         return my_b64_hmac_digest
 
     def _flatten(self, obj, inner=False):
@@ -74,13 +74,13 @@ class MechanicalTurk(object):
 
     def create_request(self, operation, request_parameters={}):
         """Create a Mechanical Turk client request. Unlike other libraries (thankfully), my help ends here. You can pass the operation (view the list here: http://docs.amazonwebservices.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_OperationsArticle.html) as parameter one, and a dictionary of arguments as parameter two. To send multiple of the same argument (for instance, multiple workers to notify in NotifyWorkers), you can send a list."""
-        self.operation = operation.encode('utf-8')
+        self.operation = operation
         if self.sandbox:
             self.service_url = 'https://mechanicalturk.sandbox.amazonaws.com/?Service=AWSMechanicalTurkRequester'
         else:
             self.service_url = 'https://mechanicalturk.amazonaws.com/?Service=AWSMechanicalTurkRequester'
         # create the operation signature
-        timestamp = self._generate_timestamp(time.gmtime()).encode('utf-8')
+        timestamp = self._generate_timestamp(time.gmtime())
         signature = self._generate_signature('AWSMechanicalTurkRequester', operation, timestamp, self.aws_secret_key)
         # Add common parameters to request dict
         request_parameters.update({"Operation": operation, "Version": "2012-03-25", "AWSAccessKeyId": self.aws_key, "Signature": signature, "Timestamp": timestamp})
