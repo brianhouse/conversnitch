@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import time, json, threading, subprocess, queue
+import time, json, threading, subprocess, queue, platform
 import numpy as np
 from housepy import log, config, strings, net#, s3
 from scipy.io import wavfile
@@ -19,8 +19,10 @@ class Recorder(threading.Thread):
             t = int(time.time())
             log.info("record %s" % t)
             try:
-                command = "arecord -D plughw:1,0 -d 10 -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % t  # 10s of mono 11k PCM
-                command = "cp audio_tmp/test.wav audio_tmp/%s.wav" % t  # for testing
+                if platform.system() == "Darwin":                
+                    command = "cp audio_tmp/test.wav audio_tmp/%s.wav" % t  # for testing
+                else:
+                    command = "arecord -D plughw:1,0 -d 10 -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % t  # 10s of mono 11k PCM
                 log.info("%s" % command)
                 time.sleep(1)
                 subprocess.check_call(command, shell=True)    
@@ -84,7 +86,7 @@ class Uploader(threading.Thread):
         try:
             # s3.upload(filename)
             data = {'t': t}
-            response = net.read("http://%s:%s" % (config['server']['host'], config['server']['port']), json.dumps(data))
+            response = net.read("http://%s:%s" % (config['server']['host'], config['server']['port']), json.dumps(data).encode('utf-8'))
             log.info(response)
             os.remove(filename)
         except Exception as e:

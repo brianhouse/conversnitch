@@ -8,7 +8,7 @@ server:
     host: localhost
     port: 6767
 
-aws:
-    access_key_id: AKIAIZA6MX3QIQX6ZOCA
-    secret_access_key: 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
-    bucket: wavefarm
+s3:
+    access_key_id: 
+    secret_access_key: 
+    bucket: 
