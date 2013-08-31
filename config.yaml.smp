@@ -1,0 +1,14 @@
+tail: True
+log: False
+
+noise_threshold: 0.1    # percent of gain
+time_threshold: 2    # sum total seconds above noise_threshold
+
+server:
+    host: localhost
+    port: 6767
+
+aws:
+    access_key_id: AKIAIZA6MX3QIQX6ZOCA
+    secret_access_key: 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
+    bucket: wavefarm
