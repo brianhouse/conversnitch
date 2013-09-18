@@ -17,7 +17,8 @@ requires housepy
 Notes
 -----
 
-https://requester.mturk.com/
+https://requester.mturk.com/  
+https://requestersandbox.mturk.com/
 
 
 ### Copyright/License
