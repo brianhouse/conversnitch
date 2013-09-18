@@ -14,6 +14,12 @@ requires housepy
     sudo pip-3.3 install -r requirements.txt
 
 
+Notes
+-----
+
+https://requester.mturk.com/
+
+
 ### Copyright/License
 
 Copyright (c) 2013 Brian House

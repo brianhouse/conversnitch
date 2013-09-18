@@ -12,3 +12,10 @@ s3:
     access_key_id: 
     secret_access_key: 
     bucket: 
+
+mturk:
+    use_sandbox: True
+    stdout_log: False
+    access_key_id: 
+    secret_access_key: 
+    layout_id: 
