@@ -3,6 +3,14 @@ Overhear
 
 A monitoring device
 
+Architecture
+------------
+
+- RasPi continually records 10s samples, analyze for interesting audio, if so, upload to s3 bucket and report to server.
+- Server, receiving the request, creates an mturk HIT, with link to s3.
+- A cron process checks HITs for completions. If it finds one, it takes the result and posts to twitter.
+
+
 
 Installation
 ------------
