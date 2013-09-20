@@ -20,8 +20,12 @@ class TweetSender(threading.Thread):
         while True:
             message = self.queue.get()
             log.info("SENDING TWEET: %s" % message)
-            self.sender.statuses.update(status=message)
-            log.info("--> sent")
+            try:
+                self.sender.statuses.update(status=message)
+            except Exception as e:
+                log.error(log.exc(e))
+            else:
+                log.info("--> sent")
 
 
 if __name__ == "__main__":

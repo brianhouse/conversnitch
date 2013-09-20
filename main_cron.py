@@ -9,8 +9,8 @@ while True:
     clips = model.get_recent()
     for clip in clips:
         log.info("Checking hit_id %s" % clip['hit_id'])
-        text = mturk.retrieve_result(clip['hit_id'])
-        model.mark_clip(clip['t'])
+        text = mturk.retrieve_result(clip['hit_id'])        
         if text is not None:
+            model.mark_clip(clip['t'])
             ts.queue.put(text)
     time.sleep(10)
