@@ -2,7 +2,9 @@ tail: True
 log: False
 
 noise_threshold: 0.1    # percent of gain
-time_threshold: 2    # sum total seconds above noise_threshold
+time_threshold: 2       # sum total seconds above noise_threshold
+
+lag: 600
 
 server:
     host: localhost
@@ -25,3 +27,4 @@ twitter:
     access_token_secret: 
     consumer_key: 
     consumer_secret: 
+

@@ -84,7 +84,9 @@ class Uploader(threading.Thread):
     def upload(self, t, filename):      
         log.info("upload %s" % filename)          
         try:
-            # s3.upload(filename)
+            log.info("Uploading to s3...")
+            s3.upload(filename)
+            log.info("--> uploaded. Pinging server...")
             data = {'t': t}
             response = net.read("http://%s:%s" % (config['server']['host'], config['server']['port']), json.dumps(data).encode('utf-8'))
             log.info(response)

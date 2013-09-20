@@ -6,45 +6,51 @@ from lib import mturkcore
 
 m = mturkcore.MechanicalTurk()
 
-def create_hit():
+def create_hit(link):
+    log.info("Creating HIT...")
     response = m.create_request('CreateHIT', {  'Title': "Transcribe 10 seconds of audio (WARNING: This HIT may contain adult content. Worker discretion is advised.)",
                                                 'Description': "Listen to a 10 second audio clip and transcribe what is said.",
                                                 'Reward': {'Amount': 0.05, 'CurrencyCode': "USD"},
                                                 'AssignmentDurationInSeconds': 3*60,
-                                                'LifetimeInSeconds': 5*60,                                                                            
+                                                'LifetimeInSeconds': config['lag'],
                                                 'HITLayoutId': config['mturk']['layout_id'], 
-                                                'HITLayoutParameter': {'Name': "link", 'Value': "http://test.com"},
+                                                'HITLayoutParameter': {'Name': "link", 'Value': link},
                                                 })
     if not m.is_valid():
-        log.error("Request failed: %s" % response)
-        return    
-    print(json.dumps(response, indent=4))
-    # retrieve hit
-    if m.is_valid():
-        print("--> success")    
-    else:
-        print("failed")
+        log.error("--> failed: %s" % json.dumps(response, indent=4))
+        return False
+    try:
+        hit_id = response['CreateHITResponse']['HIT']['HITId']
+        log.info("--> created HIT %s" % hit_id)
+        return hit_id
+    except Exception as e:
+        log.error(log.exc(e))
+        return False
 
 
-def retrieve_result():
-    response = m.create_request('GetAssignmentsForHIT', {'HITId': "2ACHYW2GTP9RA5UWMPS6CYSOP30SN4"})
+def retrieve_result(hit_id):
+    response = m.create_request('GetAssignmentsForHIT', {'HITId': hit_id})
     if not m.is_valid():
         log.error("Request failed: %s" % response)
         return
     try:
-        answer = response['GetAssignmentsForHITResponse']['GetAssignmentsForHITResult']['Assignment']['Answer']
+        answer = response['GetAssignmentsForHITResponse']['GetAssignmentsForHITResult']
+        if 'Assignment' not in answer:
+            log.info("--> not answered yet")
+            return None
+        answer = answer['Assignment']['Answer']
         tokens = strings.strip_html(answer).split('\n')
         for token in tokens:
             if len(token) == 0 or token == "summary":
                 continue
             answer = token
             break
-        print(answer)
+        log.debug(answer)
+        return answer
     except Exception as e:
-        log.error("Response malformed: (%s) %s" % (log.exc(e), response))
+        log.error("Response malformed: (%s) %s" % (log.exc(e), json.dumps(response, indent=4)))
+        return None
 
-
-retrieve_result()
 
 """
 {
@@ -88,11 +94,6 @@ retrieve_result()
     }
 }
 
-
-
-Retrieve the HITId, then we need to check up on it later.
-
-Make sure hits are automatically accepted and paid within the same interval as the expiration. This will then essentially be the lag time.
 
 """
 
