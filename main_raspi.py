@@ -70,6 +70,8 @@ class Processor(threading.Thread):
             log.debug("total_content_time %s" % total_content_time)
             if total_content_time > config['time_threshold']:
                 self.out_queue.put((t, filename))
+            elif platform.system() != "Darwin":                            
+                os.remove(filename)
         except Exception as e:
             log.error(log.exc(e))
 
@@ -96,7 +98,8 @@ class Uploader(threading.Thread):
             data = {'t': t}
             response = net.read("http://%s:%s" % (config['server']['host'], config['server']['port']), json.dumps(data).encode('utf-8'))
             log.info(response)
-            # os.remove(filename)
+            if platform.system() != "Darwin":                            
+                os.remove(filename)
         except Exception as e:
             log.error(log.exc(e))
 
