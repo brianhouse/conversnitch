@@ -1,1 +1,1 @@
-port s3 to Python 3
+- only issue in getting full loop now is starting the process on the pi without a keyboard

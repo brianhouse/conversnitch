@@ -61,16 +61,18 @@ class Processor(threading.Thread):
                 signal = signal[:, 0]    # enforce mono
             signal = (np.array(signal).astype('float') / (2**16 * 0.5))   # assuming 16-bit PCM, -1 - 1
             signal = abs(signal)    # magnitude
-            log.debug("found magnitude")
+            # log.debug("found magnitude")
             content_samples = 0
             for sample in signal:
                 if sample > config['noise_threshold']:
                     content_samples += 1
             total_content_time = float(content_samples) / sample_rate
-            log.debug("total_content_time %s" % total_content_time)
+            log.info("total_content_time %s" % total_content_time)
             if total_content_time > config['time_threshold']:
+                log.info("--> adding to upload queue")
                 self.out_queue.put((t, filename))
             elif platform.system() != "Darwin":                            
+                log.info("--> deleting file")
                 os.remove(filename)
         except Exception as e:
             log.error(log.exc(e))
@@ -92,13 +94,13 @@ class Uploader(threading.Thread):
     def upload(self, t, filename):      
         log.info("upload %s" % filename)          
         try:
-            log.info("Uploading to s3...")
             s3.upload(filename)
             log.info("--> uploaded. Pinging server...")
             data = {'t': t}
             response = net.read("http://%s:%s" % (config['server']['host'], config['server']['port']), json.dumps(data).encode('utf-8'))
             log.info(response)
-            if platform.system() != "Darwin":                            
+            if platform.system() != "Darwin":    
+                log.info("--> deleting local file")                        
                 os.remove(filename)
         except Exception as e:
             log.error(log.exc(e))
