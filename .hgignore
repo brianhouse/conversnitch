@@ -9,3 +9,4 @@ data.db
 data/*
 run/*
 *.wav
+*.pem
