@@ -5,6 +5,7 @@ import numpy as np
 from housepy import log, config, strings, net, s3, util
 from scipy.io import wavfile
 
+DURATION = 10
 
 class Recorder(threading.Thread):
 
@@ -22,16 +23,15 @@ class Recorder(threading.Thread):
                 if platform.system() == "Darwin":                
                     command = "cp audio_tmp/test.wav audio_tmp/%s.wav" % t  # for testing
                 else:
-                    command = "arecord -D plughw:1,0 -d 10 -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % t  # 10s of mono 11k PCM
+                    command = "arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % (DURATION, t)  # 10s of mono 11k PCM
                 log.info("%s" % command)
-                time.sleep(1)
                 subprocess.check_call(command, shell=True)    
             except Exception as e:
                 log.error(log.exc(e))
+                time.sleep(DURATION)
                 continue
             log.info("--> ok, wrote audio_tmp/%s.wav" % t)
             self.out_queue.put(t)
-            break
 
 
 class Processor(threading.Thread):
