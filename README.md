@@ -30,6 +30,13 @@ https://requestersandbox.mturk.com/
 https://workersandbox.mturk.com/
 
 
+Server reminders
+----------------
+    cp ngnix.conf /etc/nginx/
+    sudo service nginx start
+
+
+
 ### Copyright/License
 
 Copyright (c) 2013 Brian House
