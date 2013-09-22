@@ -35,6 +35,7 @@ Server reminders
     cp ngnix.conf /etc/nginx/
     sudo service nginx start
 
+    scp -i overhear.pem ubuntu@54.235.200.47:~/overhear/config.yaml config.yaml
 
 
 ### Copyright/License
