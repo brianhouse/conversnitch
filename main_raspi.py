@@ -57,11 +57,17 @@ class Processor(threading.Thread):
             log.debug("sample_rate %s" % sample_rate)
             duration = float(len(signal)) / sample_rate
             log.debug("duration %ss" % strings.format_time(duration))
-            signal = signal[:, 0]    # enforce mono
+            if platform.system() == "Darwin":                            
+                signal = signal[:, 0]    # enforce mono
             signal = (np.array(signal).astype('float') / (2**16 * 0.5))   # assuming 16-bit PCM, -1 - 1
             signal = abs(signal)    # magnitude
-            signal = [sample for sample in signal if sample > config['noise_threshold']]    # thresholded and reduced
-            total_content_time = len(signal) / sample_rate
+            log.debug("found magnitude")
+            content_samples = 0
+            for sample in signal:
+                if sample > config['noise_threshold']:
+                    content_samples += 1
+            total_content_time = float(content_samples) / sample_rate
+            log.debug("total_content_time %s" % total_content_time)
             if total_content_time > config['time_threshold']:
                 self.out_queue.put((t, filename))
         except Exception as e:
