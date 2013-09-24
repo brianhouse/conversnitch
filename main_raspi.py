@@ -6,8 +6,10 @@ from housepy import log, config, strings, net, s3, util, process
 from scipy.io import wavfile
 
 DURATION = 10
+AUDIO_TMP = os.path.abspath(os.path.join(os.path.dirname(__file__), "audio_tmp"))
 
 process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
+
 
 class Recorder(threading.Thread):
 
@@ -26,7 +28,7 @@ class Recorder(threading.Thread):
                     command = "cp audio_tmp/test.wav audio_tmp/%s.wav" % t  # for testing
                     time.sleep(DURATION)
                 else:
-                    command = "/usr/bin/arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % (DURATION, t)  # 10s of mono 11k PCM
+                    command = "/usr/bin/arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav %s/%s.wav" % (DURATION, AUDIO_TMP, t)  # 10s of mono 11k PCM
                 log.info("%s" % command)
                 subprocess.check_call(command, shell=True)    
             except Exception as e:
@@ -54,7 +56,7 @@ class Processor(threading.Thread):
     def process(self, t):
         log.info("process %s" % t)        
         try:
-            filename = "audio_tmp/%s.wav" % t
+            filename = "%s/%s.wav" % (AUDIO_TMP, t)
             sample_rate, signal = wavfile.read(filename)
             log.debug("samples %s" % len(signal))
             log.debug("sample_rate %s" % sample_rate)
