@@ -10,3 +10,4 @@ data/*
 run/*
 *.wav
 *.pem
+monitrc

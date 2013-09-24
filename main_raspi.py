@@ -2,10 +2,12 @@
 
 import time, json, threading, subprocess, queue, platform, os
 import numpy as np
-from housepy import log, config, strings, net, s3, util
+from housepy import log, config, strings, net, s3, util, process
 from scipy.io import wavfile
 
 DURATION = 10
+
+process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
 
 class Recorder(threading.Thread):
 
@@ -22,6 +24,7 @@ class Recorder(threading.Thread):
             try:
                 if platform.system() == "Darwin":                
                     command = "cp audio_tmp/test.wav audio_tmp/%s.wav" % t  # for testing
+                    time.sleep(DURATION)
                 else:
                     command = "arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % (DURATION, t)  # 10s of mono 11k PCM
                 log.info("%s" % command)

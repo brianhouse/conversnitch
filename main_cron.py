@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 import model, mturk, tweet_sender, time
-from housepy import config, log
+from housepy import config, log, process
 
 ts = tweet_sender.TweetSender()
+
+process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
 
 while True:
     clips = model.get_recent()
