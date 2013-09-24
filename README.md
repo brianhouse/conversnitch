@@ -38,6 +38,8 @@ Server reminders
 
     scp -i overhear.pem ubuntu@54.235.200.47:~/overhear/config.yaml config.yaml
 
+    sudo apt-get install ntp
+
 
 ### Copyright/License
 

@@ -1,1 +1,2 @@
-- only issue in getting full loop now is starting the process on the pi without a keyboard
+- put server stuff on monit or no?
+- something might be up with model recent entries
