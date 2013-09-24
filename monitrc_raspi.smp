@@ -1,15 +1,18 @@
 ###
 #
-# configure monit here: /etc/monit/monitrc
+# chmod 0600 monitrc_raspi
+# sudo chown root monitrc_raspi
+# sudo cp monitrc_raspi /etc/monit/monitrc
 # then set startup to 1 here: /etc/default/monit
-# start it with init.d: sudo service monit start
+# sudo service monit start
+# sudo monit status
 #
-# start with -vI option to see what's up
+# will run as root via init.d
 #
 ###
 
 
-# poll at 1-minute intervals
+# poll at 2-minute intervals
 set daemon 120
 
 set httpd port 2812 and use address localhost   # configure monitoring webservice
@@ -18,4 +21,4 @@ set httpd port 2812 and use address localhost   # configure monitoring webservic
 
 check process main_raspi with pidfile /home/pi/overhear/run/main_raspi.pid
   start program = "/usr/bin/python3 /home/pi/overhear/main_raspi.py" 
-  stop program = ""
+  stop program = "/bin/pwd"

@@ -26,7 +26,7 @@ class Recorder(threading.Thread):
                     command = "cp audio_tmp/test.wav audio_tmp/%s.wav" % t  # for testing
                     time.sleep(DURATION)
                 else:
-                    command = "arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % (DURATION, t)  # 10s of mono 11k PCM
+                    command = "/usr/bin/arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav audio_tmp/%s.wav" % (DURATION, t)  # 10s of mono 11k PCM
                 log.info("%s" % command)
                 subprocess.check_call(command, shell=True)    
             except Exception as e:
