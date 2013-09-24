@@ -28,7 +28,7 @@ def add_clip(t, hit_id):
 
 def get_recent():
     t = util.timestamp()
-    db.execute("SELECT * FROM clips WHERE t<=? AND posted=0", (t - config['lag'],))
+    db.execute("SELECT * FROM clips WHERE t>=? AND posted=0", (t - config['lag'],))
     # db.execute("SELECT * FROM clips WHERE posted=0")
     clips = [dict(clip) for clip in db.fetchall()]
     return clips
