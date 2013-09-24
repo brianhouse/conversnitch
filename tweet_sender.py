@@ -18,7 +18,7 @@ class TweetSender(threading.Thread):
 
     def run(self):
         while True:
-            message = self.queue.get()
+            message = self.queue.get()[:140]
             log.info("SENDING TWEET: %s" % message)
             try:
                 self.sender.statuses.update(status=message)
