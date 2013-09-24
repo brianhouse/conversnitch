@@ -8,6 +8,7 @@ ts = tweet_sender.TweetSender()
 process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
 
 while True:
+    log.info("//////////")
     clips = model.get_recent()
     for clip in clips:
         log.info("Checking hit_id %s" % clip['hit_id'])
