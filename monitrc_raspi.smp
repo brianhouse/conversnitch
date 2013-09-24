@@ -9,6 +9,8 @@
 #
 # will run as root via init.d
 #
+# remember, _everything_ under monit needs absolute paths
+#
 ###
 
 

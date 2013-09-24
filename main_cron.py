@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import model, mturk, tweet_sender, time
+import model, mturk, tweet_sender, time, os
 from housepy import config, log, process
 
 ts = tweet_sender.TweetSender()
