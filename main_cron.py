@@ -5,7 +5,7 @@ from housepy import config, log, process
 
 ts = tweet_sender.TweetSender()
 
-process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
+process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
 log.info("//////////")
 clips = model.get_recent()

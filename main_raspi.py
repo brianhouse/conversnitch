@@ -8,8 +8,7 @@ from scipy.io import wavfile
 DURATION = 10
 AUDIO_TMP = os.path.abspath(os.path.join(os.path.dirname(__file__), "audio_tmp"))
 
-process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
-
+process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
 class Recorder(threading.Thread):
 

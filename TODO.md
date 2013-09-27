@@ -1,2 +1,3 @@
 - put server stuff on monit or no?
-- something might be up with model recent entries
+
+- a tweet didnt send...  ah, because it dies to quick. configure everything for monit.

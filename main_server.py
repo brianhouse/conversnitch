@@ -3,7 +3,7 @@
 import datetime, pytz, model, os, json, mturk
 from housepy import config, log, server, util, process
 
-process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
+process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
 class Home(server.Handler):
     
