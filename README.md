@@ -54,6 +54,9 @@ make sure the server is on top of the time:
     sudo apt-get install ntp
 
 
+RasPI reminders
+---------------
+    alsamixer
 
 
 ### Copyright/License

@@ -21,6 +21,7 @@ mturk:
     access_key_id: 
     secret_access_key: 
     layout_id: 
+    payout: 0.20    
 
 twitter:
     access_token: 

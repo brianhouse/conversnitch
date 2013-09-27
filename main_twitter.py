@@ -17,4 +17,4 @@ while True:
         if text is not None:
             model.mark_clip(clip['t'])
             ts.queue.put(text)
-    time.sleep(10)
+    time.sleep(30)

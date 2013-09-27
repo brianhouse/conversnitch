@@ -10,8 +10,8 @@ def create_hit(link):
     log.info("Creating HIT...")
     response = m.create_request('CreateHIT', {  'Title': "Transcribe 10 seconds of audio (WARNING: This HIT may contain adult content. Worker discretion is advised.)",
                                                 'Description': "Listen to a 10 second audio clip and transcribe what is said.",
-                                                'Reward': {'Amount': 0.05, 'CurrencyCode': "USD"},
-                                                'AssignmentDurationInSeconds': 3*60,
+                                                'Reward': {'Amount': config['mturk']['payout'], 'CurrencyCode': "USD"},
+                                                'AssignmentDurationInSeconds': int(config['lag']/2),
                                                 'LifetimeInSeconds': config['lag'],
                                                 'HITLayoutId': config['mturk']['layout_id'], 
                                                 'HITLayoutParameter': {'Name': "link", 'Value': link},
