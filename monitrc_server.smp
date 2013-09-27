@@ -21,10 +21,10 @@ set daemon 120
 set httpd port 2812 and use address localhost   # configure monitoring webservice
   allow 0.0.0.0/0.0.0.0                        # Allow everything to connect  
 
-check process main_server with pidfile /home/pi/overhear/run/main_server.pid
-  start program = "/usr/bin/python3 /home/pi/overhear/main_server.py" 
+check process main_server with pidfile /home/ubuntu/overhear/run/main_server.pid
+  start program = "/usr/bin/python3 /home/ubuntu/overhear/main_server.py" 
   stop program = "/bin/pwd"
 
-check process main_twitter with pidfile /home/pi/overhear/run/main_twitter.pid
-  start program = "/usr/bin/python3 /home/pi/overhear/main_twitter.py" 
+check process main_twitter with pidfile /home/ubuntu/overhear/run/main_twitter.pid
+  start program = "/usr/bin/python3 /home/ubuntu/overhear/main_twitter.py" 
   stop program = "/bin/pwd"

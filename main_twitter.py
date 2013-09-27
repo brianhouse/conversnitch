@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import model, mturk, tweet_sender, time, os
-from housepy import config, log, process
+from housepy import config, log, process, util
 
 ts = tweet_sender.TweetSender()
 
@@ -12,7 +12,7 @@ while True:
     clips = model.get_recent()
     log.info("%s recent clips" % len(clips))
     for clip in clips:
-        log.info("Checking hit_id %s" % clip['hit_id'])
+        log.info("Checking %s %s %s" % (clip['t'], clip['hit_id'], util.datestring(clip['t'])))
         text = mturk.retrieve_result(clip['hit_id'])        
         if text is not None:
             model.mark_clip(clip['t'])
