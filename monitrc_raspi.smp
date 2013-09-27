@@ -10,6 +10,7 @@
 # will run as root via init.d
 #
 # remember, _everything_ under monit needs absolute paths
+# ec2 doesnt need a webservice password; raspi does
 #
 ###
 
@@ -19,7 +20,7 @@ set daemon 120
 
 set httpd port 2812 and use address localhost   # configure monitoring webservice
   allow 0.0.0.0/0.0.0.0                        # Allow everything to connect  
-  allow pi:____
+  pi:wavefarm
 
 check process main_raspi with pidfile /home/pi/overhear/run/main_raspi.pid
   start program = "/usr/bin/python3 /home/pi/overhear/main_raspi.py" 

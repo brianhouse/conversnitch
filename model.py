@@ -3,7 +3,7 @@
 import sqlite3, json, time, sys, os
 from housepy import config, log, util
 
-connection = sqlite3.connect("data.db")
+connection = sqlite3.connect(os.path.abspath(os.path.join(os.path.dirname(__file__), "data.db")))
 connection.row_factory = sqlite3.Row
 db = connection.cursor()
 
