@@ -1,7 +1,18 @@
-Overhear
-========
+Conversnitch
+============
 
-A monitoring device
+by Brian House and Kyle McDonald
+
+Conversnitch is a small device that automatically tweets overheard conversations, bridging the gap between (presumed) private physical space and public space online.
+
+Information moves between spaces that might be physical or virtual, free or proprietary, illegal or playful, sonic or textual.
+
+
+Instructions
+------------
+Should run continuously; power-up is automatic, must have continuous
+access to an internet-connected wireless network.
+
 
 Architecture
 ------------
@@ -11,20 +22,19 @@ Architecture
 - A cron process checks HITs for completions. If it finds one, it takes the result and posts to twitter.
 
 
-
 Installation
 ------------
 
-Python >=3.3
-
+requires Python >=3.3
 requires housepy
-
-    sudo pip-3.3 install -r requirements.txt
+requires monit (follow instructions in monit_server)
 
     sudo apt-get install monit
+    sudo pip-3.3 install -r requirements.txt
 
-Notes
------
+
+mturk urls
+----------
 
 https://requester.mturk.com/  
 https://requestersandbox.mturk.com/

@@ -1,0 +1,30 @@
+###
+#
+# chmod 0600 monitrc_server
+# sudo chown root monitrc_server
+# sudo cp monitrc_server /etc/monit/monitrc
+# then set startup to 1 here: /etc/default/monit
+# sudo service monit start
+# sudo monit status
+#
+# will run as root via init.d
+#
+# remember, _everything_ under monit needs absolute paths
+#
+###
+
+
+# poll at 2-minute intervals
+set daemon 120
+
+set httpd port 2812 and use address localhost   # configure monitoring webservice
+  allow 0.0.0.0/0.0.0.0                        # Allow everything to connect  
+  allow ubuntu:
+
+check process main_server with pidfile /home/pi/overhear/run/main_server.pid
+  start program = "/usr/bin/python3 /home/pi/overhear/main_server.py" 
+  stop program = "/bin/pwd"
+
+check process main_twitter with pidfile /home/pi/overhear/run/main_twitter.pid
+  start program = "/usr/bin/python3 /home/pi/overhear/main_twitter.py" 
+  stop program = "/bin/pwd"
