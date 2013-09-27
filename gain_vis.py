@@ -24,6 +24,7 @@ ctx.plot(signal)
 ctx.line(0, config['noise_threshold'], 1, config['noise_threshold'], stroke=(255, 0, 0))
 ctx.output("screenshots")
 
+log.debug("noise threshold is %s" % config['noise_threshold'])
 log.debug("found magnitude")
 content_samples = 0
 for sample in signal:

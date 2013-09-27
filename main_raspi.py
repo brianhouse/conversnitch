@@ -23,18 +23,14 @@ class Recorder(threading.Thread):
             t = util.timestamp()
             log.info("record %s" % t)
             try:
-                if platform.system() == "Darwin":                
-                    command = "cp audio_tmp/test.wav audio_tmp/%s.wav" % t  # for testing
-                    time.sleep(DURATION)
-                else:
-                    command = "/usr/bin/arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav %s/%s.wav" % (DURATION, AUDIO_TMP, t)  # 10s of mono 11k PCM
+                command = "/usr/bin/arecord -D plughw:1,0 -d %s -f S16_LE -c1 -r11025 -t wav %s/%s.wav" % (DURATION, AUDIO_TMP, t)  # 10s of mono 11k PCM
                 log.info("%s" % command)
                 subprocess.check_call(command, shell=True)    
             except Exception as e:
                 log.error(log.exc(e))
                 time.sleep(DURATION)
                 continue
-            log.info("--> ok, wrote audio_tmp/%s.wav" % t)
+            log.info("--> wrote audio_tmp/%s.wav" % t)
             self.out_queue.put(t)
 
 
@@ -57,12 +53,10 @@ class Processor(threading.Thread):
         try:
             filename = "%s/%s.wav" % (AUDIO_TMP, t)
             sample_rate, signal = wavfile.read(filename)
-            log.debug("samples %s" % len(signal))
-            log.debug("sample_rate %s" % sample_rate)
+            # log.debug("samples %s" % len(signal))
+            # log.debug("sample_rate %s" % sample_rate)
             duration = float(len(signal)) / sample_rate
-            log.debug("duration %ss" % strings.format_time(duration))
-            if platform.system() == "Darwin":                            
-                signal = signal[:, 0]    # enforce mono
+            # log.debug("duration %ss" % strings.format_time(duration))
             signal = (np.array(signal).astype('float') / (2**16 * 0.5))   # assuming 16-bit PCM, -1 - 1
             signal = abs(signal)    # magnitude
             # log.debug("found magnitude")
@@ -71,13 +65,13 @@ class Processor(threading.Thread):
                 if sample > config['noise_threshold']:
                     content_samples += 1
             total_content_time = float(content_samples) / sample_rate
-            log.info("total_content_time %s" % total_content_time)
-            if total_content_time > config['time_threshold']:
-                log.info("--> adding to upload queue")
+            log.info("--> %s total_content_time %s" % (t, total_content_time))
+            if total_content_time > config['time_threshold']:                
                 self.out_queue.put((t, filename))
-            elif platform.system() != "Darwin":                            
-                log.info("--> deleting file")
+                log.info("--> %s added to upload queue" % t)
+            else:
                 os.remove(filename)
+                log.info("--> %s deleted" % t)
         except Exception as e:
             log.error(log.exc(e))
 
@@ -103,9 +97,7 @@ class Uploader(threading.Thread):
             data = {'t': t}
             response = net.read("http://%s:%s" % (config['server']['host'], config['server']['port']), json.dumps(data).encode('utf-8'))
             log.info(response)
-            if platform.system() != "Darwin":    
-                log.info("--> deleting local file")                        
-                os.remove(filename)
+            os.remove(filename)
         except Exception as e:
             log.error(log.exc(e))
 
