@@ -52,6 +52,9 @@ def retrieve_result(hit_id):
         return None
 
 
+if __name__ == "__main__":
+    create_hit("http://google.com")
+
 """
 {
     "CreateHITResponse": {

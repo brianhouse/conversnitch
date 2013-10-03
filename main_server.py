@@ -17,7 +17,8 @@ class Home(server.Handler):
         try:
             data = json.loads(self.request.body.decode('utf-8'))
             hit_id = mturk.create_hit("https://s3.amazonaws.com/%s/%s.wav" % (config['s3']['bucket'], data['t']))
-            model.add_clip(data['t'], hit_id)
+            if hit_id != False:
+                model.add_clip(data['t'], hit_id)
         except Exception as e:
             return self.error(e)
         return self.text("OK")

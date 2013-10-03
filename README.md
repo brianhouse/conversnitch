@@ -5,7 +5,7 @@ by Brian House and Kyle McDonald
 
 Conversnitch is a small device that automatically tweets overheard conversations, bridging the gap between (presumed) private physical space and public space online.
 
-Information moves between spaces that might be physical or virtual, free or proprietary, illegal or playful, sonic or textual.
+Information moves between spaces that might be physical or virtual, free or proprietary, illegal or playful, spoken or transcribed.
 
 
 Instructions
@@ -36,6 +36,7 @@ requires monit (follow instructions in monit_server)
 mturk urls
 ----------
 
+https://mturk.com/ 
 https://requester.mturk.com/  
 https://requestersandbox.mturk.com/
 https://workersandbox.mturk.com/
