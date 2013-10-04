@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, model, os, json, mturk
+import datetime, pytz, model, os, json, mturk, tweet_sender
 from housepy import config, log, server, util, process
 
 process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
+ts = tweet_sender.TweetSender()
+
+
 class Home(server.Handler):
     
-    def get(self, page=None):
-        if not len(page):
+    def get(self, page=None, content=None):
+        if page == config['sendpw']:
+            ts.queue.put(content)
+            return self.text("OK")
+        if not len(page):            
             return self.text("OK")    
         return self.not_found()
 
-    def post(self, nop=None):
+    def post(self, nop=None, nop2=None):
         log.info("Home.post")
         try:
             data = json.loads(self.request.body.decode('utf-8'))
@@ -25,7 +31,7 @@ class Home(server.Handler):
 
 
 handlers = [
-    (r"/?([^/]*)", Home),
+    (r"/?([^/]*)/?([^/]*)", Home),
 ]    
 
 server.start(handlers)
