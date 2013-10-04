@@ -11,10 +11,11 @@ def create_hit(link):
     response = m.create_request('CreateHIT', {  'Title': "Transcribe 10 seconds of audio (WARNING: This HIT may contain adult content. Worker discretion is advised.)",
                                                 'Description': "Listen to a 10 second audio clip and transcribe what is said.",
                                                 'Reward': {'Amount': config['mturk']['payout'], 'CurrencyCode': "USD"},
-                                                'AssignmentDurationInSeconds': int(config['lag']/2),
+                                                'AssignmentDurationInSeconds': config['lag'],
                                                 'LifetimeInSeconds': config['lag'],
                                                 'HITLayoutId': config['mturk']['layout_id'], 
                                                 'HITLayoutParameter': {'Name': "link", 'Value': link},
+                                                'AutoApprovalDelayInSeconds': 3600,
                                                 })
     if not m.is_valid():
         log.error("--> failed: %s" % json.dumps(response, indent=4))
@@ -32,28 +33,28 @@ def retrieve_result(hit_id):
     response = m.create_request('GetAssignmentsForHIT', {'HITId': hit_id})
     if not m.is_valid():
         log.error("Request failed: %s" % response)
-        return
+        return None
     try:
-        answer = response['GetAssignmentsForHITResponse']['GetAssignmentsForHITResult']
+        answer = response['GetAssignmentsForHITResponse']['GetAssignmentsForHITResult']        
         if 'Assignment' not in answer:
             log.info("--> not answered yet")
             return None
-        answer = answer['Assignment']['Answer']
-        tokens = strings.strip_html(answer).split('\n')
-        for token in tokens:
-            if len(token) == 0 or token == "summary":
-                continue
-            answer = token
-            break
-        log.debug(answer)
-        return answer
+        answer = xmltodict.parse(answer['Assignment']['Answer'])
+        answer = answer['QuestionFormAnswers']['Answer']
+        struct = {}
+        for part in answer:
+            struct[part['QuestionIdentifier']] = part['FreeText'].strip().replace("&#13;", "").replace('"', "").replace("&lt;", "<").replace("&gt;", ">")
+        return struct
     except Exception as e:
         log.error("Response malformed: (%s) %s" % (log.exc(e), json.dumps(response, indent=4)))
         return None
 
 
 if __name__ == "__main__":
-    create_hit("http://google.com")
+    # hit_id = create_hit("http://google.com")
+    # print(hit_id)
+    retrieve_result("292MT6YTWX4KRSV7QJ49CGI6TTXW1K")
+
 
 """
 {
