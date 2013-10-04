@@ -45,7 +45,7 @@ def retrieve_result(hit_id):
         for part in answer:
             if part['FreeText'] is None:
                 continue
-            struct[part['QuestionIdentifier']] = part['FreeText'].strip().replace("&#13;", "").replace('"', "").replace("&lt;", "<").replace("&gt;", ">")
+            struct[part['QuestionIdentifier']] = part['FreeText'].strip().replace("&#13;", "").replace("&lt;", "<").replace("&gt;", ">")
         return struct
     except Exception as e:
         log.error("Response malformed: (%s) %s" % (log.exc(e), json.dumps(response, indent=4)))
@@ -53,10 +53,13 @@ def retrieve_result(hit_id):
 
 
 if __name__ == "__main__":
+    pass
+    # import model
     # hit_id = create_hit("http://google.com")
+    # model.add_clip(util.timestamp(), hit_id)
     # print(hit_id)
-    struct = retrieve_result("2YYYQ4J3NAB9ZQFXU3PYLT1TUPMQD3")
-    print(struct)
+    # struct = retrieve_result("2YYYQ4J3NAB9ZQFXU3PYLT1TUPMQD3")
+    # print(struct)
 
 
 """
