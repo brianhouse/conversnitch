@@ -23,7 +23,7 @@ while True:
         try:
             for label in ('line_1', 'line_2', 'line_3'):
                 if label in struct and len(struct[label]):
-                    message = '"%s"' % struct[label]
+                    message = '"%s"' % struct[label].strip('"')[:138]
                     ts.queue.put(message)
         except Exception as e:
             log.error(log.exc(e))
