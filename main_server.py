@@ -12,7 +12,8 @@ class Home(server.Handler):
     
     def get(self, page=None, content=None):
         if page == config['sendpw']:
-            ts.queue.put(content)
+            message = '"%s"' % content.strip('"')[:138]
+            ts.queue.put(message)
             return self.text("OK")
         if not len(page):            
             return self.text("OK")    
