@@ -43,6 +43,8 @@ def retrieve_result(hit_id):
         answer = answer['QuestionFormAnswers']['Answer']
         struct = {}
         for part in answer:
+            if part['FreeText'] is None:
+                continue
             struct[part['QuestionIdentifier']] = part['FreeText'].strip().replace("&#13;", "").replace('"', "").replace("&lt;", "<").replace("&gt;", ">")
         return struct
     except Exception as e:
@@ -53,7 +55,8 @@ def retrieve_result(hit_id):
 if __name__ == "__main__":
     # hit_id = create_hit("http://google.com")
     # print(hit_id)
-    retrieve_result("292MT6YTWX4KRSV7QJ49CGI6TTXW1K")
+    struct = retrieve_result("2YYYQ4J3NAB9ZQFXU3PYLT1TUPMQD3")
+    print(struct)
 
 
 """
