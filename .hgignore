@@ -11,4 +11,6 @@ run/*
 *.wav
 *.pem
 monitrc
-screenshots
+dev
+documentation
+posts

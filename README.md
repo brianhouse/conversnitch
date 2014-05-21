@@ -25,9 +25,9 @@ Architecture
 Installation
 ------------
 
-requires Python >=3.3
-requires housepy
-requires monit (follow instructions in monit_server)
+requires Python >=3.3  
+requires housepy  
+requires monit (follow instructions in monit_server)  
 
     sudo apt-get install monit
     sudo pip-3.3 install -r requirements.txt
@@ -36,10 +36,10 @@ requires monit (follow instructions in monit_server)
 mturk urls
 ----------
 
-https://mturk.com/ 
+https://mturk.com/  
 https://requester.mturk.com/  
-https://requestersandbox.mturk.com/
-https://workersandbox.mturk.com/
+https://requestersandbox.mturk.com/  
+https://workersandbox.mturk.com/  
 
 
 Server reminders
