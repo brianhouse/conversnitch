@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-import model, mturk, tweet_sender, time, os, sys
-from housepy import config, log, process, util
-
+import tweet_sender, time, os, sys
 
 
 message = sys.argv[1]

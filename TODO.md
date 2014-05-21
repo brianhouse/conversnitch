@@ -1,2 +1,2 @@
-- need a gain visulizer
-- possibly normalize the volume after selecting clips
+- filter messages for less than two words
+- ideally, approve HITs based on quality -- no extraneous punctuation, several words

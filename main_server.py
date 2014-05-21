@@ -10,16 +10,17 @@ ts = tweet_sender.TweetSender()
 
 class Home(server.Handler):
     
-    def get(self, page=None, content=None):
+    def get(self, page=None):
         if page == config['sendpw']:
-            message = '"%s"' % content.strip('"')[:138]
-            ts.queue.put(message)
+            message = '"%s"' % self.get_argument('message').strip('"')[:138]
+            # ts.queue.put(message)
+            log.debug(message)
             return self.text("OK")
         if not len(page):            
             return self.text("OK")    
         return self.not_found()
 
-    def post(self, nop=None, nop2=None):
+    def post(self, nop=None):
         log.info("Home.post")
         try:
             data = json.loads(self.request.body.decode('utf-8'))
@@ -32,7 +33,7 @@ class Home(server.Handler):
 
 
 handlers = [
-    (r"/?([^/]*)/?([^/]*)", Home),
+    (r"/?([^/]*)", Home),
 ]    
 
 server.start(handlers)
