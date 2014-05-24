@@ -13,8 +13,8 @@ class Home(server.Handler):
     def get(self, page=None):
         if page == config['sendpw']:
             message = '"%s"' % self.get_argument('message').strip('"')[:138]
-            # ts.queue.put(message)
-            log.debug(message)
+            ts.queue.put(message)
+            log.info("remote: %s" % message)
             return self.text("OK")
         if not len(page):            
             return self.text("OK")    
